@@ -5,25 +5,16 @@
 #ifndef MATRIZLISTAS_FILEMAKEROPERACIONES_H
 #define MATRIZLISTAS_FILEMAKEROPERACIONES_H
 
+#include "ListaMatriz.h"
 
 class FileMakerOperaciones {
 public:
     FileMakerOperaciones();
-    void WriteFiles();
-    void ReadFiles();
-    void CrearMatriz(int **, int, int);
-    void printMatrix();
-    void SumaMatrices(int **, int, int);
-    void RestaMatrices(int **, int, int);
-    void MultiplyMatrices(int **, int, int);
-    void DividirMatrices(int **, int, int);
-    void DeterminanteMatriz(int **, int, int);
-
-private:
-
-    int nFilas;
-    int nColum;
-    int **punteromatriz;
+    int *ReadfromFiles(std::string, int, int);
+    ListaMatriz SumaMatrices(ListaMatriz, ListaMatriz);
+    ListaMatriz RestaMatrices(ListaMatriz, ListaMatriz);
+    ListaMatriz MultiplyMatrices(ListaMatriz, ListaMatriz);
+    int DeterminanteMatriz(ListaMatriz);
 };
 
 

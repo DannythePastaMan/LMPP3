@@ -5,13 +5,14 @@
 #ifndef MATRIZLISTAS_NODO_H
 #define MATRIZLISTAS_NODO_H
 
-
 class Nodo {
-private:
+public:
     Nodo *abajo;
     Nodo *sig;
     int dato;
+
     Nodo();
+    explicit Nodo(int dato);
 };
 
 

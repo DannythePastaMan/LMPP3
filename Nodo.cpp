@@ -6,8 +6,10 @@
 #include <iostream>
 
 Nodo::Nodo() {
-    this->sig = NULL;
-    this->abajo = NULL;
-    this->dato = dato;
+    this->sig = nullptr;
+    this->abajo = nullptr;
+}
 
+Nodo::Nodo(int dato) {
+    this->dato = dato;
 }

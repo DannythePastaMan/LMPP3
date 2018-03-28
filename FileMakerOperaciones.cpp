@@ -6,116 +6,262 @@
 #include <string>
 #include <fstream>
 #include "FileMakerOperaciones.h"
+#include "ListaMatriz.h"
 using namespace std;
 
 
 FileMakerOperaciones::FileMakerOperaciones() {
-    this->nColum = nColum;
-    this->nFilas = nFilas;
-    this->punteromatriz = punteromatriz;
 
 }
 
-void FileMakerOperaciones::CrearMatriz(int **, int, int) {
-    cout<<"Num filas: ";
-    cin>>nFilas;
+int *FileMakerOperaciones::ReadfromFiles(string archivo, int nfilas, int ncolum){
+    ifstream archive(archivo);
 
-    cout<<"\nNum columnas: ";
-    cin>>nColum;
+    auto **punteromatriz = new int *[nfilas];
+    for (int i = 0; i < nfilas; ++i) {
+        punteromatriz[i] = new int [ncolum];
 
-    punteromatriz = new int *[nFilas];
-    for (int i = 0; i < nFilas; ++i) {
-        punteromatriz[i] = new int [nColum];
-    }
-
-    cout<<"\nDigitando elementos de la matriz: \n";
-    for (int i = 0; i < nFilas; ++i) {
-        for (int j = 0; j < nColum; ++j) {
-            cout<<"\nDigite un numero["<<i<<"]["<<j<<"]: ";
-            cin>>*(*(punteromatriz+i)+j);
+        for (int j = 0; j < ncolum; ++j) {
+            archive>>punteromatriz[i][j];
         }
     }
+
+    return *punteromatriz;
 }
+ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2) {
+    ListaMatriz LR = ListaMatriz();
+    Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
+    Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
+    Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *aux4 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
 
-void FileMakerOperaciones::printMatrix() {
-    int nFilas;
-    int nColum;
-    int **punteromatriz;
+    int nfilas = 0, ncolum = 0, temp1, temp2;
 
-cout<<"*****Matriz*****"<<endl;
-    for (int i = 0; i < nFilas; ++i) {
-        for (int j = 0; j < nColum; ++j) {
-            cout<<*(*(punteromatriz+i)+j)<<" ";
-        }
-    cout<<"\n";
-    }
-}
-
-void FileMakerOperaciones::WriteFiles() {
-    ofstream archive1, archive2, archive3,archive4;
-
-    archive1.open("Matriz1.txt", ios::out);
-    archive2.open("Matriz2.txt", ios::out);
-    archive3.open("Matriz3.txt", ios::out);
-    archive4.open("Matriz4.txt", ios::out);
-
-    if(archive1.fail()||archive2.fail()||archive3.fail()||archive4.fail()){
-        cout<<"No se pudo abrir archivo.";
-        exit(1);
+    if(No1.nfilas != No2.nfilas){
+        cout<<"Para poder realizar la suma de matrices se deben tener un numero igual de filas, operacion no realizada."<<endl;
     }
 
     else{
-        cout<<"\nA continuacion se le pedira crear matrices(4), por favor digitelas en los siguientes enunciados: \n"<<endl;
-        for (int i = 0; i < 4; ++i) {
-            CrearMatriz(punteromatriz, nFilas, nColum);
+        auto **punteromatriz (reinterpret_cast<int **>(No1.nfilas));
+
+        for (int i = 0; i < No1.nfilas; ++i) {
+            punteromatriz[i] = new int(No1.ncolum);
         }
-        printMatrix();
-        cout<<"Matrices creadas exitosamente"<<endl;
-        cout<<"Archivos Creados"<<endl;
+
+        for (int i = 0; i < nfilas; ++i) {
+            for (int j = 0; j < ncolum; ++j) {
+                if (aux1->abajo != nullptr) {
+                    if (aux2->sig != nullptr) {
+                        punteromatriz[nfilas][ncolum] = aux2->dato + aux4->dato;
+                        aux2 = aux2->sig;
+                        aux4 = aux4->sig;
+                        ncolum = ncolum + 1;
+                    }
+
+                    punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                    aux2 = aux1->abajo;
+                    aux4 = aux3->abajo;
+                    aux1 = aux1->abajo;
+                    aux3 = aux3->abajo;
+                    nfilas = nfilas + 1;
+                    ncolum = 0;
+                }
+            }
+        }
+
+                for (int k = 0; k < nfilas; ++k) {
+                    if(aux2->sig != nullptr){
+                        punteromatriz[nfilas][ncolum] = aux2->dato + aux4->dato;
+                        aux2 = aux2->sig;
+                        aux4 = aux4->sig;
+                        ncolum = ncolum + 1;
+                    }
+                }
+
+                Matriz TM;
+                TM.nfilas = No1.nfilas;
+                TM.ncolum = No2.ncolum;
+                TM.punteromatriz = punteromatriz;
+
+        LR = LR.CrearMatriz(TM);
+    }
+    return LR;
+}
+
+ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2) {
+    ListaMatriz LR = ListaMatriz();
+    Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
+    Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
+    Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *aux4 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+
+    int nfilas = 0, ncolum = 0, temp1, temp2;
+
+    if (No1.nfilas != No2.nfilas) {
+        cout
+                << "Para poder realizar la suma de matrices se deben tener un numero igual de filas, operacion no realizada."
+                << endl;
+    } else {
+        auto **punteromatriz(reinterpret_cast<int **>(No1.nfilas));
+
+        for (int i = 0; i < No1.nfilas; ++i) {
+            punteromatriz[i] = new int(No1.ncolum);
+        }
+
+        for (int i = 0; i < nfilas; ++i) {
+            for (int j = 0; j < ncolum; ++j) {
+                if (aux1->abajo != nullptr) {
+                    if (aux2->sig != nullptr) {
+                        temp1 = aux2->dato;
+                        temp2 = aux4->dato;
+                        punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                        aux2 = aux2->sig;
+                        aux4 = aux4->sig;
+                        ncolum = ncolum + 1;
+                    }
+
+
+                    temp1 = aux2->dato;
+                    temp2 = aux4->dato;
+                    punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                    aux2 = aux1->abajo;
+                    aux4 = aux3->abajo;
+                    aux1 = aux1->abajo;
+                    aux3 = aux3->abajo;
+                    nfilas = nfilas + 1;
+                    ncolum = 0;
+                }
+            }
+        }
+
+                for (int k = 0; k < nfilas; ++k) {
+                    if (aux2->sig != nullptr) {
+
+                        temp1 = aux2->dato;
+                        temp2 = aux4->dato;
+                        punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                        aux2 = aux2->sig;
+                        aux4 = aux4->sig;
+                        ncolum = ncolum + 1;
+                    }
+                }
+
+                temp1 = aux2->dato;
+                temp2 = aux4->dato;
+                punteromatriz[nfilas][ncolum] = temp1 - temp2;
+
+                Matriz TM;
+                TM.nfilas = No1.nfilas;
+                TM.ncolum = No2.ncolum;
+                TM.punteromatriz = punteromatriz;
+
+                LR = LR.CrearMatriz(TM);
+            }
+    return LR;
+        }
+
+ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz No2) {
+    ListaMatriz LR = ListaMatriz();
+    Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
+    Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
+    Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *aux4 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+
+    int nfilas = 0, ncolum = 0, temp1, temp2;
+
+    if (No1.nfilas != No2.nfilas) {
+        cout
+                << "Para poder realizar la suma de matrices se deben tener un numero igual de filas, operacion no realizada."
+                << endl;
+    } else {
+        auto **punteromatriz(reinterpret_cast<int **>(No1.nfilas));
+
+        for (int i = 0; i < No1.nfilas; ++i) {
+            punteromatriz[i] = new int(No1.ncolum);
+        }
+
+        for (int i = 0; i < nfilas; ++i) {
+            for (int j = 0; j < ncolum; ++j) {
+                if (aux1->abajo != nullptr) {
+                    if (aux2->sig != nullptr) {
+                        temp1 = aux2->dato;
+                        temp2 = aux4->dato;
+                        punteromatriz[nfilas][ncolum] = temp1 * temp2;
+                        aux2 = aux2->sig;
+                        aux4 = aux4->sig;
+                        ncolum = ncolum + 1;
+                    }
+
+
+                    temp1 = aux2->dato;
+                    temp2 = aux4->dato;
+                    punteromatriz[nfilas][ncolum] = temp1 * temp2;
+                    aux2 = aux1->abajo;
+                    aux4 = aux3->abajo;
+                    aux1 = aux1->abajo;
+                    aux3 = aux3->abajo;
+                    nfilas = nfilas + 1;
+                    ncolum = 0;
+                }
+            }
+        }
+
+        for (int k = 0; k < nfilas; ++k) {
+            if (aux2->sig != nullptr) {
+
+                temp1 = aux2->dato;
+                temp2 = aux4->dato;
+                punteromatriz[nfilas][ncolum] = temp1 * temp2;
+                aux2 = aux2->sig;
+                aux4 = aux4->sig;
+                ncolum = ncolum + 1;
+            }
+        }
+
+        temp1 = aux2->dato;
+        temp2 = aux4->dato;
+        punteromatriz[nfilas][ncolum] = temp1 * temp2;
+
+        Matriz TM;
+        TM.nfilas = No1.nfilas;
+        TM.ncolum = No2.ncolum;
+        TM.punteromatriz = punteromatriz;
+
+        LR = LR.CrearMatriz(TM);
+    }
+    return LR;
+}
+
+int FileMakerOperaciones::DeterminanteMatriz(ListaMatriz No1) {
+    int Res = -1, Determinante1, Determinante2, DeterminanteA, DeterminanteB, DeterminanteC, DeterminanteD, DeterminanteE, DeterminanteF;
+
+    if(No1.nfilas != No1.ncolum){
+        cout<<"Para poder llevar a cabo la operacion, la matriz debe ser cuadrada"<<endl;
     }
 
-    archive1.close();
-    archive2.close();
-    archive3.close();
-    archive4.close();
-}
-
-void FileMakerOperaciones::ReadFiles() {
-    ifstream archive;
-    string text;
-
-    archive.open("Juego.txt", ios::in);
-
-    if(archive.fail()){
-        cout<<"No se pudo abrir el archivo";
-        exit(1);
+    else if(No1.ncolum == 1){
+        Res = No1.inicio->dato;
     }
 
-    while(!archive.eof()){
-        getline(archive, text);
-        cout<<text<<endl;
+    else if(No1.ncolum == 2){
+        Determinante1 = No1.inicio->dato * No1.inicio->sig->abajo->dato;
+        Determinante2 = No1.inicio->sig->dato * No1.inicio->abajo->dato;
+        Res = Determinante1 - Determinante2;
     }
-    archive.close();
-}
 
-void FileMakerOperaciones::SumaMatrices(int **punteromatrizSuma, int nfilasSuma, int ncolumnasSuma) {
-    WriteFiles();
-}
+    else if(No1.ncolum == 3){
+        DeterminanteA = No1.inicio->dato * No1.inicio->sig->abajo->dato * No1.inicio->sig->abajo->sig->abajo->dato;
+        DeterminanteB = No1.inicio->sig->dato * No1.inicio->sig->abajo->sig->dato * No1.inicio->abajo->abajo->dato;
+        DeterminanteC = No1.inicio->abajo->dato * No1.inicio->abajo->abajo->sig->dato * No1.inicio->sig->sig->dato;
+        DeterminanteD = No1.inicio->sig->sig->dato * No1.inicio->sig->abajo->dato * No1.inicio->abajo->abajo->dato;
+        DeterminanteE = No1.inicio->sig->dato * No1.inicio->abajo->dato * No1.inicio->sig->sig->abajo->abajo->sig->dato;
+        DeterminanteF = No1.inicio->sig->sig->abajo->dato * No1.inicio->sig->abajo->abajo->dato * No1.inicio->dato;
 
-void FileMakerOperaciones::RestaMatrices(int **, int, int) {
-    WriteFiles();
+        Res = (DeterminanteA + DeterminanteB + DeterminanteC) - (DeterminanteD + DeterminanteE + DeterminanteF);
+    }
 
-}
-
-void FileMakerOperaciones::MultiplyMatrices(int **, int, int) {
-    WriteFiles();
-
-}
-
-void FileMakerOperaciones::DividirMatrices(int **, int, int) {
-    WriteFiles();
-}
-
-void FileMakerOperaciones::DeterminanteMatriz(int **, int, int) {
-    WriteFiles();
-}
+    else if(No1.ncolum >= 4){
+        cout<<"Tiene que usar Laplace."<<endl;
+    }
+    return Res;
+    }

@@ -5,6 +5,8 @@
 #include "ListaMatriz.h"
 #include "FileMakerOperaciones.h"
 #include <iostream>
+#include <string>
+#include <stdlib.h>
 #include <vector>
 #include <fstream>
 
@@ -89,15 +91,22 @@ void ListaMatriz::printMatrix() {
 
 ListaMatriz ListaMatriz::cargarMatriz() {
     ListaMatriz LR = ListaMatriz();
-    string archive;
+    ofstream archive;
+    string archivename;
     int nfila, ncolum;
     Matriz m;
     FileMakerOperaciones FMO;
 
     cout<<"Ingrese archivo donde desea cargar la matriz: "<<endl;
-    cin>>archive;
+    getline(cin, archivename);
+    archive.open(archivename.c_str(), ios::out);
 
-    ifstream file(archive);
+    if(archive.fail()){
+        cout<<"Archive not found|";
+        exit(1);
+    }
+
+    ifstream file(archivename);
 
     cout<<"Digite numero de filas: ";
     cin>>nfila;
@@ -110,7 +119,7 @@ ListaMatriz ListaMatriz::cargarMatriz() {
 
         m.nfilas = nfila;
         m.ncolum = ncolum;
-        m.punteromatriz = reinterpret_cast<int **>(*FMO.ReadfromFiles(archive, nfila, ncolum));
+        m.punteromatriz = reinterpret_cast<int **>(*FMO.ReadfromFiles(archivename, nfila, ncolum));
     }
 
     else{
@@ -118,6 +127,7 @@ ListaMatriz ListaMatriz::cargarMatriz() {
         return LR;
     }
 
+    archive.close();
     LR =  LR.CrearMatriz(m);
     return LR;
 }

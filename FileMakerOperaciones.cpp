@@ -17,15 +17,25 @@ FileMakerOperaciones::FileMakerOperaciones() {
 int *FileMakerOperaciones::ReadfromFiles(string archivo, int nfilas, int ncolum){
     ifstream archive(archivo);
 
-    auto **punteromatriz = new int *[nfilas];
-    for (int i = 0; i < nfilas; ++i) {
-        punteromatriz[i] = new int [ncolum];
+    archive.open(archivo, ios::in);
 
-        for (int j = 0; j < ncolum; ++j) {
-            archive>>punteromatriz[i][j];
+    if(archive.fail()){
+        cout<<"File could not be opened";
+        exit(1);
+    }
+    auto **punteromatriz = new int *[nfilas];
+
+    while(!archive.eof()) {
+        for (int i = 0; i < nfilas; ++i) {
+            punteromatriz[i] = new int[ncolum];
+
+            for (int j = 0; j < ncolum; ++j) {
+                archive >> punteromatriz[i][j];
+            }
         }
     }
 
+    archive.close();
     return *punteromatriz;
 }
 ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2) {

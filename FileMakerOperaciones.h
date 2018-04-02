@@ -1,22 +1,24 @@
 //
-// Created by daniel on 3/20/18.
+// Created by daniel on 4/2/18.
 //
 
-#ifndef MATRIZLISTAS_FILEMAKEROPERACIONES_H
-#define MATRIZLISTAS_FILEMAKEROPERACIONES_H
+#ifndef LISTAMATRIZ_FILEMAKEROPERACIONES_H
+#define LISTAMATRIZ_FILEMAKEROPERACIONES_H
 
 #include "ListaMatriz.h"
-#include <vector>
+#include "Nodo.h"
 #include <iostream>
+#include <vector>
 
 class FileMakerOperaciones {
 public:
+    ListaMatriz Add(ListaMatriz, ListaMatriz);
+    ListaMatriz Sub(ListaMatriz, ListaMatriz);
+    ListaMatriz Multi(ListaMatriz, ListaMatriz);
+    int Det(ListaMatriz);
     FileMakerOperaciones();
-    ListaMatriz SumaMatrices(ListaMatriz, ListaMatriz);
-    ListaMatriz RestaMatrices(ListaMatriz, ListaMatriz);
-    ListaMatriz MultiplyMatrices(ListaMatriz, ListaMatriz);
-    int DeterminanteMatriz(ListaMatriz);
+
 };
 
 
-#endif //MATRIZLISTAS_FILEMAKEROPERACIONES_H
+#endif //LISTAMATRIZ_FILEMAKEROPERACIONES_H

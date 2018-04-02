@@ -1,32 +1,24 @@
 //
-// Created by daniel on 3/21/18.
+// Created by daniel on 4/2/18.
 //
 
-#ifndef MATRIZLISTAS_MATRIZ_H
-#define MATRIZLISTAS_MATRIZ_H
+#ifndef LISTAMATRIZ_LISTAMATRIZ_H
+#define LISTAMATRIZ_LISTAMATRIZ_H
 
-#include <iostream>
-#include <vector>
-
-#include "Nodo.h"
-
-struct Matriz{
-    int nfilas, ncolum;
-    std::vector<std::vector<int>> Matriz;
-    std::string archive;
+struct Nodo{
+    Nodo *sig;
+    Nodo *abajo;
+    int value;
 };
-
 class ListaMatriz {
 public:
-    Nodo *inicio;
+    Nodo *inicioMatriz;
     int nfilas, ncolum;
-    ListaMatriz CrearMatriz(Matriz);
-    void printMatrix();
-    ListaMatriz ReadandWriteOnFile();
-    ListaMatriz();
+    ListaMatriz() : inicioMatriz(nullptr){
+
+    }
+    void printLista();
 };
 
 
-#endif //MATRIZLISTAS_MATRIZ_H
-
-
+#endif //LISTAMATRIZ_LISTAMATRIZ_H

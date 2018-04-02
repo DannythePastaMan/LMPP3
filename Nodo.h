@@ -1,19 +1,9 @@
 //
-// Created by daniel on 3/19/18.
+// Created by daniel on 4/2/18.
 //
 
-#ifndef MATRIZLISTAS_NODO_H
-#define MATRIZLISTAS_NODO_H
-
-class Nodo {
-public:
-    Nodo *abajo;
-    Nodo *sig;
-    int dato;
-
-    Nodo();
-    explicit Nodo(int dato);
-};
+#ifndef LISTAMATRIZ_NODO_H
+#define LISTAMATRIZ_NODO_H
 
 
-#endif //MATRIZLISTAS_NODO_H
+#endif //LISTAMATRIZ_NODO_H

@@ -6,11 +6,13 @@
 #define MATRIZLISTAS_MATRIZ_H
 
 #include <iostream>
+#include <vector>
 
 #include "Nodo.h"
+
 struct Matriz{
     int nfilas, ncolum;
-    int **punteromatriz;
+    std::vector<std::vector<int>> Matriz;
     std::string archive;
 };
 
@@ -21,7 +23,7 @@ public:
     int nfilas, ncolum;
     ListaMatriz CrearMatriz(Matriz);
     void printMatrix();
-    ListaMatriz cargarMatriz();
+    ListaMatriz ReadandWriteOnFile(std::string, int, int);
     ListaMatriz();
 };
 

@@ -2,77 +2,49 @@
 // Created by daniel on 3/20/18.
 //
 #include <iostream>
-#include <stdlib.h>
-#include <string>
+#include <vector>
 #include <fstream>
 #include "FileMakerOperaciones.h"
-#include "ListaMatriz.h"
 using namespace std;
 
+FileMakerOperaciones::FileMakerOperaciones() = default;
 
-FileMakerOperaciones::FileMakerOperaciones() {
-
-}
-
-int *FileMakerOperaciones::ReadfromFiles(string archivo, int nfilas, int ncolum){
-    ifstream archive(archivo);
-
-    archive.open(archivo, ios::in);
-
-    if(archive.fail()){
-        cout<<"File could not be opened";
-        exit(1);
-    }
-    auto **punteromatriz = new int *[nfilas];
-
-    while(!archive.eof()) {
-        for (int i = 0; i < nfilas; ++i) {
-            punteromatriz[i] = new int[ncolum];
-
-            for (int j = 0; j < ncolum; ++j) {
-                archive >> punteromatriz[i][j];
-            }
-        }
-    }
-
-    archive.close();
-    return *punteromatriz;
-}
 ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2) {
     ListaMatriz LR = ListaMatriz();
     Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
-    Nodo *aux4 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *temp1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
+    Nodo *aux2 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *temp2 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Matriz TM;
 
-    int nfilas = 0, ncolum = 0, temp1, temp2;
+    int nfilas = 0, ncolum = 0;
 
     if(No1.nfilas != No2.nfilas){
         cout<<"Para poder realizar la suma de matrices se deben tener un numero igual de filas, operacion no realizada."<<endl;
     }
 
     else{
-        auto **punteromatriz (reinterpret_cast<int **>(No1.nfilas));
+       vector<vector<int>> Matriz;
 
         for (int i = 0; i < No1.nfilas; ++i) {
-            punteromatriz[i] = new int(No1.ncolum);
+            Matriz[i] = vector<int>(static_cast<unsigned long>(No1.ncolum));
         }
 
         for (int i = 0; i < nfilas; ++i) {
             for (int j = 0; j < ncolum; ++j) {
                 if (aux1->abajo != nullptr) {
-                    if (aux2->sig != nullptr) {
-                        punteromatriz[nfilas][ncolum] = aux2->dato + aux4->dato;
+                    if (temp1->sig != nullptr) {
+                        Matriz[nfilas][ncolum] = temp1->dato + temp2->dato;
                         aux2 = aux2->sig;
-                        aux4 = aux4->sig;
+                        temp2 = temp2->sig;
                         ncolum = ncolum + 1;
                     }
 
-                    punteromatriz[nfilas][ncolum] = temp1 - temp2;
-                    aux2 = aux1->abajo;
-                    aux4 = aux3->abajo;
+                   Matriz [nfilas][ncolum] = static_cast<int>(temp1 - temp2);
+                    temp1 = aux1->abajo;
+                    temp2 = aux2->abajo;
                     aux1 = aux1->abajo;
-                    aux3 = aux3->abajo;
+                    aux2 = aux2->abajo;
                     nfilas = nfilas + 1;
                     ncolum = 0;
                 }
@@ -81,17 +53,17 @@ ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2)
 
                 for (int k = 0; k < nfilas; ++k) {
                     if(aux2->sig != nullptr){
-                        punteromatriz[nfilas][ncolum] = aux2->dato + aux4->dato;
-                        aux2 = aux2->sig;
-                        aux4 = aux4->sig;
+                        Matriz[nfilas][ncolum] = temp1->dato + temp2->dato;
+                        temp1 = temp1->sig;
+                         temp2 = temp2->sig;
                         ncolum = ncolum + 1;
                     }
                 }
-
-                Matriz TM;
+                TM.archive = "";
                 TM.nfilas = No1.nfilas;
                 TM.ncolum = No2.ncolum;
-                TM.punteromatriz = punteromatriz;
+                TM.Matriz = Matriz;
+
 
         LR = LR.CrearMatriz(TM);
     }
@@ -100,6 +72,7 @@ ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2)
 
 ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2) {
     ListaMatriz LR = ListaMatriz();
+    Matriz TM;
     Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
     Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
     Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
@@ -112,10 +85,10 @@ ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2
                 << "Para poder realizar la suma de matrices se deben tener un numero igual de filas, operacion no realizada."
                 << endl;
     } else {
-        auto **punteromatriz(reinterpret_cast<int **>(No1.nfilas));
+        vector<vector<int>> Matriz;
 
         for (int i = 0; i < No1.nfilas; ++i) {
-            punteromatriz[i] = new int(No1.ncolum);
+            Matriz[i] = vector<int>(static_cast<unsigned long>(No1.ncolum));
         }
 
         for (int i = 0; i < nfilas; ++i) {
@@ -124,7 +97,7 @@ ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2
                     if (aux2->sig != nullptr) {
                         temp1 = aux2->dato;
                         temp2 = aux4->dato;
-                        punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                        Matriz[nfilas][ncolum] = temp1 - temp2;
                         aux2 = aux2->sig;
                         aux4 = aux4->sig;
                         ncolum = ncolum + 1;
@@ -133,7 +106,7 @@ ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2
 
                     temp1 = aux2->dato;
                     temp2 = aux4->dato;
-                    punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                    Matriz[nfilas][ncolum] = temp1 - temp2;
                     aux2 = aux1->abajo;
                     aux4 = aux3->abajo;
                     aux1 = aux1->abajo;
@@ -149,7 +122,7 @@ ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2
 
                         temp1 = aux2->dato;
                         temp2 = aux4->dato;
-                        punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                        Matriz[nfilas][ncolum] = temp1 - temp2;
                         aux2 = aux2->sig;
                         aux4 = aux4->sig;
                         ncolum = ncolum + 1;
@@ -158,12 +131,12 @@ ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2
 
                 temp1 = aux2->dato;
                 temp2 = aux4->dato;
-                punteromatriz[nfilas][ncolum] = temp1 - temp2;
+                Matriz[nfilas][ncolum] = temp1 - temp2;
 
-                Matriz TM;
+                TM.archive = "";
                 TM.nfilas = No1.nfilas;
                 TM.ncolum = No2.ncolum;
-                TM.punteromatriz = punteromatriz;
+                TM.Matriz = Matriz;
 
                 LR = LR.CrearMatriz(TM);
             }
@@ -172,6 +145,7 @@ ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2
 
 ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz No2) {
     ListaMatriz LR = ListaMatriz();
+    Matriz TM;
     Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
     Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
     Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
@@ -184,10 +158,10 @@ ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz 
                 << "Para poder realizar la suma de matrices se deben tener un numero igual de filas, operacion no realizada."
                 << endl;
     } else {
-        auto **punteromatriz(reinterpret_cast<int **>(No1.nfilas));
+        vector<vector<int>>Matriz;
 
         for (int i = 0; i < No1.nfilas; ++i) {
-            punteromatriz[i] = new int(No1.ncolum);
+            Matriz[i] = vector<int>(static_cast<unsigned long>(No1.ncolum));
         }
 
         for (int i = 0; i < nfilas; ++i) {
@@ -196,7 +170,7 @@ ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz 
                     if (aux2->sig != nullptr) {
                         temp1 = aux2->dato;
                         temp2 = aux4->dato;
-                        punteromatriz[nfilas][ncolum] = temp1 * temp2;
+                        Matriz[nfilas][ncolum] = temp1 * temp2;
                         aux2 = aux2->sig;
                         aux4 = aux4->sig;
                         ncolum = ncolum + 1;
@@ -205,7 +179,7 @@ ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz 
 
                     temp1 = aux2->dato;
                     temp2 = aux4->dato;
-                    punteromatriz[nfilas][ncolum] = temp1 * temp2;
+                    Matriz[nfilas][ncolum] = temp1 * temp2;
                     aux2 = aux1->abajo;
                     aux4 = aux3->abajo;
                     aux1 = aux1->abajo;
@@ -221,7 +195,7 @@ ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz 
 
                 temp1 = aux2->dato;
                 temp2 = aux4->dato;
-                punteromatriz[nfilas][ncolum] = temp1 * temp2;
+                Matriz[nfilas][ncolum] = temp1 * temp2;
                 aux2 = aux2->sig;
                 aux4 = aux4->sig;
                 ncolum = ncolum + 1;
@@ -230,12 +204,12 @@ ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz 
 
         temp1 = aux2->dato;
         temp2 = aux4->dato;
-        punteromatriz[nfilas][ncolum] = temp1 * temp2;
+        Matriz[nfilas][ncolum] = temp1 * temp2;
 
-        Matriz TM;
+        TM.archive = "";
         TM.nfilas = No1.nfilas;
         TM.ncolum = No2.ncolum;
-        TM.punteromatriz = punteromatriz;
+        TM.Matriz = Matriz;
 
         LR = LR.CrearMatriz(TM);
     }

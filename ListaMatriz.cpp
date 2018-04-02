@@ -5,8 +5,6 @@
 #include "ListaMatriz.h"
 #include "FileMakerOperaciones.h"
 #include <iostream>
-#include <string>
-#include <stdlib.h>
 #include <vector>
 #include <fstream>
 
@@ -26,7 +24,7 @@ ListaMatriz ListaMatriz::CrearMatriz(Matriz m) {
 
     for (int i = 0; i <m.nfilas ; ++i) {
         for (int j = 0; j < m.ncolum; ++j) {
-            nuevo->dato = m.punteromatriz[i][j];
+            nuevo->dato = m.Matriz[i][j];
             nuevo->sig = nullptr;
             nuevo->abajo = nullptr;
             ListaNodos.push_back(nuevo);
@@ -63,8 +61,8 @@ ListaMatriz ListaMatriz::CrearMatriz(Matriz m) {
     return Lista;
 }
 void ListaMatriz::printMatrix() {
-    Nodo *aux = reinterpret_cast<Nodo *>(inicioMatriz);
-    Nodo *aux2 = reinterpret_cast<Nodo *>(inicioMatriz);
+    auto *aux = reinterpret_cast<Nodo *>(inicioMatriz);
+    auto *aux2 = reinterpret_cast<Nodo *>(inicioMatriz);
 
     cout<<"*****Matriz*****"<<endl;
     for (int i = 0; i < nfilas; ++i) {
@@ -89,45 +87,40 @@ void ListaMatriz::printMatrix() {
         }
     }
 
-ListaMatriz ListaMatriz::cargarMatriz() {
+ListaMatriz ListaMatriz::ReadandWriteOnFile(string archivename, int nfila, int ncolum) {
     ListaMatriz LR = ListaMatriz();
-    ofstream archive;
-    string archivename;
-    int nfila, ncolum;
-    Matriz m;
+    Matriz m = Matriz();
+    fstream archive;
     FileMakerOperaciones FMO;
 
-    cout<<"Ingrese archivo donde desea cargar la matriz: "<<endl;
-    getline(cin, archivename);
+    cout << "Nom archivo: ";
+    cin >> archivename;
+
     archive.open(archivename.c_str(), ios::out);
 
     if(archive.fail()){
-        cout<<"Archive not found|";
+        cout<<"Archive could not be opened"<<endl;
         exit(1);
     }
 
-    ifstream file(archivename);
+    cout << "Digite numero de filas: ";
+    cin >> nfila;
 
-    cout<<"Digite numero de filas: ";
-    cin>>nfila;
+    cout << "Ingrese numero de columnas: ";
+    cin >> ncolum;
 
-    cout<<"Ingrese numero de columnas: ";
-    cin>>ncolum;
+    vector<vector<int>> Matriz(static_cast<unsigned long>(nfila));
 
-    if(file.good()){
-        cout<<"File found"<<endl;
-
-        m.nfilas = nfila;
-        m.ncolum = ncolum;
-        m.punteromatriz = reinterpret_cast<int **>(*FMO.ReadfromFiles(archivename, nfila, ncolum));
+    for (int i = 0; i < nfila; ++i) {
+        Matriz[i] = vector<int>(static_cast<unsigned long>(ncolum));
     }
-
-    else{
-        cout<<"Error 404: File not found"<<endl;
-        return LR;
+    for (int i = 0; i < nfila; ++i){
+        for (int j = 0; j < ncolum; ++j) {
+            cout<<"Dijite mumeros a almacenar en matriz["<<i<<"]["<<j<<"]: ";
+            cin>>Matriz[i][j];
+            archive<<Matriz[i][j];
+        }
     }
 
     archive.close();
-    LR =  LR.CrearMatriz(m);
-    return LR;
 }

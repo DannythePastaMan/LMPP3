@@ -6,11 +6,12 @@
 #define MATRIZLISTAS_FILEMAKEROPERACIONES_H
 
 #include "ListaMatriz.h"
+#include <vector>
+#include <iostream>
 
 class FileMakerOperaciones {
 public:
     FileMakerOperaciones();
-    int *ReadfromFiles(std::string, int, int);
     ListaMatriz SumaMatrices(ListaMatriz, ListaMatriz);
     ListaMatriz RestaMatrices(ListaMatriz, ListaMatriz);
     ListaMatriz MultiplyMatrices(ListaMatriz, ListaMatriz);

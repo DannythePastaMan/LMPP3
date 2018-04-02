@@ -14,62 +14,63 @@ int main() {
 
     cout << "*******Menu*******\n\n---Bienvenido---\n" << endl;
 
-    while(opc < 5){
+    do{
     cout<< "Ingrese una opcion: \n1.Cargar Matriz\n2. Suma de Matrices\n3. Resta de Matrices\n4. Multiplicacion de Matrices\n5. Determinante\n""6. Salir" << endl;
     cin >> opc;
 
         switch (opc) {
             case 1:{
                 cout<<"*****Carga de Matrices*****"<<endl;
-                if(No1.inicioMatriz != nullptr){
+                if(No1.inicio != nullptr){
                     cout<<"Ya hay una matriz."<<endl;
                 }
 
-                if(No2.inicioMatriz != nullptr){
+                if(No2.inicio != nullptr){
                     cout<<"Ya existe una matriz en este archivo."<<endl;
                 }
 
                 else{
                     int des = -1;
 
-                    while(des != 3){
+                    do{
                         cout<<"*****Bienvenido a la carga de matrices a archivos*****\nPor favor indique donde quiere Cargar la matriz: "<<endl;
                         cout<<"1. Matriz No.1\n2. Matriz No.2\n3. No deseo cargar una matriz."<<endl;
                         cin>>des;
-                        switch (des){
-                            case 1:{
-                                No1 = m.ReadandWriteOnFile(archivename, nfilas, ncolumnas);
-                                if(No1.inicioMatriz != nullptr){
-                                    cout<<"Matriz cargada: ";
+                        switch (des) {
+                            case 1: {
+                                No1 = m.ReadandWriteOnFile();
+                                if (No1.inicio != nullptr) {
+                                    cout << "Matriz cargada: ";
                                     No1.printMatrix();
                                 }
                                 break;
                             }
 
-                            case 2:{
-                                No2 = m.ReadandWriteOnFile(archivename, nfilas, ncolumnas);
+                            case 2: {
+                                No2 = m.ReadandWriteOnFile();
 
-                                if(No2.inicioMatriz != nullptr){
-                                    cout<<"Matriz cargada: ";
+                                if (No2.inicio != nullptr) {
+                                    cout << "Matriz cargada: ";
                                     No2.printMatrix();
                                 }
                                 break;
                             }
 
-                            case 3:{
-                                cout<<"Ingrese una opcion.";
+                            case 3: {
+                                cout << "Ingrese una opcion.";
                                 break;
                             }
                         }
+                        }while(des != 3);
                     }
+                break;
                 }
 
-            }
             case 2: {
                 cout << "*******Suma de Matrices*******\n"<<endl;
                 ResultadoOperacion = FMO.SumaMatrices(No1, No2);
 
-                if(ResultadoOperacion.inicioMatriz != nullptr){
+                if(ResultadoOperacion.inicio != nullptr){
                     cout<<"\nResultado de la suma: ";
                     ResultadoOperacion.printMatrix();
                 }
@@ -78,7 +79,7 @@ int main() {
             case 3: {
                 FMO.RestaMatrices(No1, No2);
 
-                if(ResultadoOperacion.inicioMatriz != nullptr){
+                if(ResultadoOperacion.inicio != nullptr){
                     cout<<"Resultado: ";
                     ResultadoOperacion.printMatrix();
                 }
@@ -89,7 +90,7 @@ int main() {
                 cout << "*******Multiplicacion de Matrices*******\nPor favor, cargue matrices a los archivos." << endl;
 
                 FMO.MultiplyMatrices(No1, No2);
-                if(ResultadoOperacion.inicioMatriz != nullptr){
+                if(ResultadoOperacion.inicio != nullptr){
                     cout<<"Resultado: ";
                     ResultadoOperacion.printMatrix();
                 }
@@ -109,7 +110,7 @@ int main() {
 
                     switch(des){
                         case 1:{
-                            if(No1.inicioMatriz != nullptr){
+                            if(No1.inicio != nullptr){
                                 No1.printMatrix();
                                 FMO.DeterminanteMatriz(No1);
                             }
@@ -117,7 +118,7 @@ int main() {
                         }
 
                         case 2:{
-                            if(No2.inicioMatriz != nullptr){
+                            if(No2.inicio != nullptr){
                                 No2.printMatrix();
                                 FMO.DeterminanteMatriz(No2);
                             }
@@ -133,6 +134,5 @@ int main() {
                 break;
             }
         }
-        return 0;
-    }
+    }while(opc != 6);
 }

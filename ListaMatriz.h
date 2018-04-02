@@ -18,12 +18,11 @@ struct Matriz{
 
 class ListaMatriz {
 public:
-    ListaMatriz *inicioMatriz;
     Nodo *inicio;
     int nfilas, ncolum;
     ListaMatriz CrearMatriz(Matriz);
     void printMatrix();
-    ListaMatriz ReadandWriteOnFile(std::string, int, int);
+    ListaMatriz ReadandWriteOnFile();
     ListaMatriz();
 };
 

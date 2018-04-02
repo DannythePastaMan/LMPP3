@@ -11,13 +11,12 @@
 using namespace std;
 
 ListaMatriz::ListaMatriz() {
-    this->inicioMatriz = nullptr;
+    this->inicio = nullptr;
     this->ncolum = ncolum;
     this->nfilas = nfilas;
 }
 
 ListaMatriz ListaMatriz::CrearMatriz(Matriz m) {
-
     ListaMatriz Lista = ListaMatriz();
     auto *nuevo = new Nodo;
     vector<Nodo*>ListaNodos;
@@ -54,23 +53,21 @@ ListaMatriz ListaMatriz::CrearMatriz(Matriz m) {
         }
     }
 
-    Lista.inicioMatriz = reinterpret_cast<ListaMatriz *>(ListaNodos[0]);
+    Lista.inicio = ListaNodos[0];
     Lista.nfilas = m.nfilas;
     Lista.ncolum = m.ncolum;
 
     return Lista;
 }
 void ListaMatriz::printMatrix() {
-    auto *aux = reinterpret_cast<Nodo *>(inicioMatriz);
-    auto *aux2 = reinterpret_cast<Nodo *>(inicioMatriz);
+    auto *aux = inicio;
+    auto *aux2 = inicio;
 
     cout<<"*****Matriz*****"<<endl;
-    for (int i = 0; i < nfilas; ++i) {
-        for (int j = 0; j < ncolum; ++j) {
-            if (inicio->sig != nullptr && inicio->abajo) {
+ while(aux->abajo != nullptr){
+     while(aux2->sig != nullptr){
                 cout << aux2->dato << endl;
-                aux = aux->sig;
-            }
+                aux2= aux2->sig;
         }
             cout<<aux2->dato;
             aux2 = aux->abajo;
@@ -78,25 +75,24 @@ void ListaMatriz::printMatrix() {
             cout<<"\n"<<endl;
         }
 
-        for (int k = 0; k < nfilas; ++k) {
-            if(aux2->sig != nullptr){
+        while(aux2->sig != nullptr){
                 cout<<aux2->dato<<endl;
                 aux2 = aux2->sig;
             }
             cout<<aux2->dato<<endl;
         }
-    }
 
-ListaMatriz ListaMatriz::ReadandWriteOnFile(string archivename, int nfila, int ncolum) {
+ListaMatriz ListaMatriz::ReadandWriteOnFile() {
     ListaMatriz LR = ListaMatriz();
     Matriz m = Matriz();
     fstream archive;
-    FileMakerOperaciones FMO;
+    string archivename;
+    int nfila, ncolum;
 
     cout << "Nom archivo: ";
     cin >> archivename;
 
-    archive.open(archivename.c_str(), ios::out);
+    archive.open(archivename.c_str(), ios::app);
 
     if(archive.fail()){
         cout<<"Archive could not be opened"<<endl;
@@ -111,16 +107,23 @@ ListaMatriz ListaMatriz::ReadandWriteOnFile(string archivename, int nfila, int n
 
     vector<vector<int>> Matriz(static_cast<unsigned long>(nfila));
 
+if(archive.good()) {
     for (int i = 0; i < nfila; ++i) {
         Matriz[i] = vector<int>(static_cast<unsigned long>(ncolum));
     }
     for (int i = 0; i < nfila; ++i){
         for (int j = 0; j < ncolum; ++j) {
-            cout<<"Dijite mumeros a almacenar en matriz["<<i<<"]["<<j<<"]: ";
+            cout<<"Digite mumeros a almacenar en matriz["<<i<<"]["<<j<<"]: ";
             cin>>Matriz[i][j];
             archive<<Matriz[i][j];
         }
     }
+    m.archive = archivename;
+    m.nfilas = nfila;
+    m.ncolum = ncolum;
 
+}
     archive.close();
+    LR = LR.CrearMatriz(m);
+    return LR;
 }

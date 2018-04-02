@@ -11,13 +11,16 @@ FileMakerOperaciones::FileMakerOperaciones() = default;
 
 ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2) {
     ListaMatriz LR = ListaMatriz();
-    Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *temp1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *aux2 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
-    Nodo *temp2 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *aux1 = No1.inicio;
+    Nodo *temp1 = No1.inicio;
+    Nodo *aux2 = No2.inicio;
+    Nodo *temp2 = No2.inicio;
     Matriz TM;
 
     int nfilas = 0, ncolum = 0;
+    for (int i = 0; i < 2; ++i) {
+        LR.ReadandWriteOnFile();
+    }
 
     if(No1.nfilas != No2.nfilas){
         cout<<"Para poder realizar la suma de matrices se deben tener un numero igual de filas, operacion no realizada."<<endl;
@@ -64,7 +67,6 @@ ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2)
                 TM.ncolum = No2.ncolum;
                 TM.Matriz = Matriz;
 
-
         LR = LR.CrearMatriz(TM);
     }
     return LR;
@@ -73,10 +75,10 @@ ListaMatriz FileMakerOperaciones::SumaMatrices(ListaMatriz No1, ListaMatriz No2)
 ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2) {
     ListaMatriz LR = ListaMatriz();
     Matriz TM;
-    Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
-    Nodo *aux4 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *aux1 = No1.inicio;
+    Nodo *aux2 = No1.inicio;
+    Nodo *aux3 = No2.inicio;
+    Nodo *aux4 = No2.inicio;
 
     int nfilas = 0, ncolum = 0, temp1, temp2;
 
@@ -146,10 +148,10 @@ ListaMatriz FileMakerOperaciones::RestaMatrices(ListaMatriz No1, ListaMatriz No2
 ListaMatriz FileMakerOperaciones::MultiplyMatrices(ListaMatriz No1, ListaMatriz No2) {
     ListaMatriz LR = ListaMatriz();
     Matriz TM;
-    Nodo *aux1 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *aux2 = reinterpret_cast<Nodo *>(No1.inicioMatriz);
-    Nodo *aux3 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
-    Nodo *aux4 = reinterpret_cast<Nodo *>(No2.inicioMatriz);
+    Nodo *aux1 = No1.inicio;
+    Nodo *aux2 = No1.inicio;
+    Nodo *aux3 = No2.inicio;
+    Nodo *aux4 = No2.inicio;
 
     int nfilas = 0, ncolum = 0, temp1, temp2;
 

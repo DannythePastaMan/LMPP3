@@ -22,7 +22,7 @@ int main() {
         cout << "2. Suma" << endl;
         cout << "3. Resta" << endl;
         cout << "4. Multiplicacion" << endl;
-        cout << "5. Dterminante" << endl;
+        cout << "5. Determinante" << endl;
         cout << "6. Imprimir Matriz" << endl;
         cout << "7. Salir" << endl;
 

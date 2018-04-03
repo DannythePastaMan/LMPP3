@@ -34,17 +34,21 @@ void FileMakerLista::printLista() {
 }
 
 std::vector<std::vector<int>> FileMakerLista::Read(std::string archivename, int nfilas, int ncolum) {
-    ofstream file(archivename);
-    file.open(archivename, ios::app);
+    ofstream file;
+    file.open(archivename.c_str(), ios::app);
     vector<vector<int>> Matrix (nfilas);
 
+    file<<" "<<"\n";
     for (int i = 0; i < nfilas; ++i) {
         Matrix[i] = vector<int>(ncolum);
 
         for (int j = 0; j < ncolum; ++j) {
-            cout<<"Digite mumeros a almacenar en matriz["<<i<<"]["<<j<<"]: ";
+            cout<<"Digite numeros a almacenar en matriz["<<i<<"]["<<j<<"]: ";
             cin>>Matrix[i][j];
+            file<<" ";
+            file<<Matrix[i][j];
         }
+        file<<"\n";
     }
     file.close();
     return Matrix;

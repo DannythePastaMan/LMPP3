@@ -5,6 +5,7 @@
 #include "FileMakerOperations.h"
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -18,14 +19,15 @@ FileMakerLista FileMakerOperations::Add(FileMakerLista A, FileMakerLista B) {
     Nodo *Temp_B = B.inicioMatriz;
     int nfilas = 0;
     int ncolum = 0;
+    ofstream file;
 
     if (A.nfilas != B.nfilas){
         cout << "\nLa cantidad de filas deben ser iguales, por ende, no se puede realizar la operacion." << endl;
     }else if (A.ncolum != B.ncolum){
         cout << "\nLa cantidad de filas deben ser iguales, por ende, no se puede realizar la operacion." << endl;
-    }else {
+    }
+    else {
         vector<vector<int>> Matrix (static_cast<unsigned long>(A.nfilas));
-
 
         for (int i = 0; i < A.nfilas; ++i) {
             Matrix[i] = vector<int>(static_cast<unsigned long>(A.ncolum));
@@ -60,9 +62,16 @@ FileMakerLista FileMakerOperations::Add(FileMakerLista A, FileMakerLista B) {
         Temp_Data.ncolum = B.ncolum;
         Temp_Data.Matriz = Matrix;
 
+        file.open("ResultadoSuma.txt", ios::out);
+        for (int i = 0; i < A.nfilas; ++i) {
+            for (int j = 0; j < B.ncolum; ++j) {
+                file<<Matrix[i][j];
+            }
+        }
+
         Result_List = FML.Lista(Temp_Data);
     }
-
+    file.close();
     return Result_List;
 }
 
@@ -78,6 +87,7 @@ FileMakerLista FileMakerOperations::Sub(FileMakerLista A, FileMakerLista B) {
     int ncolum = 0;
     int Temp1;
     int Temp2;
+    ofstream file;
 
     if (A.nfilas != B.nfilas){
         cout << "\nLa cantidad de filas deben ser iguales, por ende, no se puede realizar la operacion." << endl;
@@ -129,9 +139,16 @@ FileMakerLista FileMakerOperations::Sub(FileMakerLista A, FileMakerLista B) {
         Temp_Data.ncolum = B.ncolum;
         Temp_Data.Matriz = Matrix;
 
+        file.open("ResultadoResta.txt", ios::out);
+        for (int i = 0; i < A.nfilas; ++i) {
+            for (int j = 0; j < B.ncolum; ++j) {
+                file<<Matrix[i][j];
+            }
+        }
+
         Result_List = FML.Lista(Temp_Data);
     }
-
+    file.close();
     return Result_List;
 }
 
@@ -147,6 +164,8 @@ FileMakerLista FileMakerOperations::Multi(FileMakerLista A, FileMakerLista B) {
     int ncolum = 0;
     int Temp1;
     int Temp2;
+    ofstream file;
+
     vector<vector<int>> Matrix (static_cast<unsigned long>(A.nfilas));
 
     if (A.nfilas != B.nfilas){
@@ -197,14 +216,22 @@ FileMakerLista FileMakerOperations::Multi(FileMakerLista A, FileMakerLista B) {
         Temp_Data.ncolum = B.ncolum;
         Temp_Data.Matriz = Matrix;
 
+        file.open("ResultadoMultiplicacion.txt", ios::out);
+        for (int i = 0; i < A.nfilas; ++i) {
+            for (int j = 0; j < B.ncolum; ++j) {
+                file<<Matrix[i][j];
+            }
+        }
+
         Result_List = FML.Lista(Temp_Data);
     }
-
+    file.close();
     return Result_List;
 }
 
 int FileMakerOperations::Det(FileMakerLista A) {
     int Result = -1;
+    ofstream file;
 
     if(A.nfilas != A.ncolum){
         cout << "Matriz debe ser cuadrada, operacion no podra ser llevada a cabo." << endl;
@@ -226,6 +253,9 @@ int FileMakerOperations::Det(FileMakerLista A) {
         cout << "Se debe resolver con las transformadas de Laplace." << endl;
     }
 
+    file.open("ResultadoDeterminante.txt", ios::out);
+    file<<Result;
+    file.close();
     return Result;
 }
 

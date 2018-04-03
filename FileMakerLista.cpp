@@ -38,7 +38,7 @@ std::vector<std::vector<int>> FileMakerLista::Read(std::string archivename, int 
     file.open(archivename.c_str(), ios::app);
     vector<vector<int>> Matrix (nfilas);
 
-    file<<" "<<"\n";
+        file<<" "<<"\n";
     for (int i = 0; i < nfilas; ++i) {
         Matrix[i] = vector<int>(ncolum);
 
